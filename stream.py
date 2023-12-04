@@ -50,49 +50,38 @@ def pagina_filtros():
 
     df = pd.read_csv('..\\Proyecto_Final\\data\\metacritic_es.csv')
 
-    # Filtro por columna
-    columna_filtro = st.sidebar.selectbox('Seleccionar columna para filtrar', ['Por defecto'] + df.columns.tolist())
+    # Crear dos columnas para organizar el diseño
+    column1, column2 = st.columns([2, 1])
 
-    # Filtro por valor en la columna seleccionada
-    if columna_filtro != 'Por defecto':
-        valor_filtro = st.sidebar.text_input(f'Filtrar por {columna_filtro}', '')
-    else:
-        valor_filtro = None
+    # Filtrar por Título
+    filtro_titulo = column2.text_input('Filtrar por Título', '')
+    df_filtrado = df[df['Título'].str.contains(filtro_titulo, case=False)]
 
-    # Aplicar filtro al DataFrame original
-    df_filtrado = df.copy()
-
-    if valor_filtro is not None and columna_filtro != 'Por defecto':
-        df_filtrado = df_filtrado[df_filtrado[columna_filtro].astype(str).str.contains(valor_filtro, case=False)]
-
-    st.write(df_filtrado)
-
-   # Filtrar por Título
-    filtro_titulo = st.text_input('Filtrar por Título', '')
-    df_filtrado = df_filtrado[df_filtrado['Title'].str.contains(filtro_titulo, case=False)]
-
-# Filtrar por Plataforma con opción "Por defecto"
-    plataforma_options = ['Por defecto'] + df_filtrado['Section'].unique().tolist()
-    plataforma = st.selectbox('Filtrar por Plataforma', plataforma_options)
+    # Filtrar por Plataforma con opción "Por defecto"
+    plataforma_options = ['Por defecto'] + df_filtrado['Sección'].unique().tolist()
+    plataforma = column2.selectbox('Filtrar por Plataforma', plataforma_options)
     if plataforma != 'Por defecto':
-        df_filtrado = df_filtrado[df_filtrado['Section'] == plataforma]
+        df_filtrado = df_filtrado[df_filtrado['Sección'] == plataforma]
 
     # Filtrar por Género con opción "Por defecto"
-    genero_options = ['Por defecto'] + df_filtrado['Genres'].unique().tolist()
-    genero = st.selectbox('Filtrar por Género', genero_options)
+    genero_options = ['Por defecto'] + df_filtrado['Género'].unique().tolist()
+    genero = column2.selectbox('Filtrar por Género', genero_options)
     if genero != 'Por defecto':
-        df_filtrado = df_filtrado[df_filtrado['Genres'] == genero]
+        df_filtrado = df_filtrado[df_filtrado['Género'] == genero]
 
     # Filtrar por Metascore
-    metascore_range = st.slider('Filtrar por Metascore', min_value=df_filtrado['Metascore'].min(), max_value=df_filtrado['Metascore'].max(), value=[df_filtrado['Metascore'].min(), df_filtrado['Metascore'].max()])
+    metascore_range = column2.slider('Filtrar por Metascore', min_value=df_filtrado['Metascore'].min(), max_value=df_filtrado['Metascore'].max(), value=[df_filtrado['Metascore'].min(), df_filtrado['Metascore'].max()])
     df_filtrado = df_filtrado[df_filtrado['Metascore'].between(metascore_range[0], metascore_range[1])]
 
-        # Botón para restablecer filtros
-    if st.button('Restablecer Filtros'):
-            df_filtrado = df.copy()
+    # Seleccionar las columnas que deseas mostrar
+    columnas_mostrar = ['Metascore', 'Userscore', 'Título', 'Género', 'Sección', 'Lanzamiento', 'Distribuidor']
+    df_filtrado_mostrar = df_filtrado[columnas_mostrar]
+
+    if column2.button('Restablecer Filtros'):
+       df_filtrado = df.copy()
 
     # Mostrar DataFrame filtrado
-    st.write('DataFrame Filtrado:', df_filtrado)
+    column1.dataframe(df_filtrado_mostrar)
 
     user_input = st.text_area("Ingresa tu búsqueda:", " ")
 
@@ -121,7 +110,7 @@ def pagina_filtros():
         filtro_titulo = st.text_input('Filtrar por Título', value=coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else "")
 
         # Filtrar el DataFrame por Título
-        df_filtrado = df[df['Title'].str.contains(filtro_titulo, case=False)]
+        df_filtrado = df[df['Título'].str.contains(filtro_titulo, case=False)]
 
         # Mostrar el DataFrame filtrado
         st.write('DataFrame Filtrado:', df_filtrado)
@@ -167,7 +156,7 @@ def pagina_acerca_de():
         pregunta = f"**{q_a_pair['Pregunta']}**"
         st.markdown(pregunta)
         st.write(q_a_pair['Respuesta'])
-    # Contenido de la página "Acerca de"
+    
 
 # Sección para navegar entre páginas
 pagina_seleccionada = st.sidebar.selectbox("Seleccionar Página", ["¿Qué es Pixel Sync?", "Búsqueda", "Q&A"])
