@@ -33,8 +33,6 @@ def gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del
         temperature=0.5
     )
     respuesta = response['choices'][0]['message']['content']
-    
-    reproducir(respuesta)
 
     return respuesta
 
