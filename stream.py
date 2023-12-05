@@ -9,7 +9,6 @@ import io
 import re
 import speech_recognition as sr
 import pyttsx3
-from unidecode import unidecode
 
 with open('openai.txt', 'r') as archivo:
     token = archivo.read()
@@ -17,6 +16,11 @@ with open('openai.txt', 'r') as archivo:
 openai.api_key = token  
 
 st.set_page_config(page_icon = '🎮', page_title = 'Pixel Sync')
+
+def reproducir(texto):  # función speech to text
+    engine = pyttsx3.init()
+    engine.say(texto)
+    engine.runAndWait()
 
 def gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del chat
     response = openai.ChatCompletion.create(
@@ -28,8 +32,11 @@ def gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del
         max_tokens=3000,
         temperature=0.5
     )
+    respuesta = response['choices'][0]['message']['content']
+    
+    reproducir(respuesta)
 
-    return response['choices'][0]['message']['content']
+    return respuesta
 
 def reconocer_audio():   # función speech to text
     recognizer = sr.Recognizer()
@@ -48,10 +55,7 @@ def reconocer_audio():   # función speech to text
         except sr.RequestError as e:
             st.error(f"Error en la solicitud al servicio de reconocimiento de voz: {e}")
 
-def reproducir(texto):  # función speech to text
-    engine = pyttsx3.init()
-    engine.say(texto)
-    engine.runAndWait()
+
 
 
 def pagina_principal():
@@ -115,11 +119,11 @@ def pagina_filtros():
     # Mostrar DataFrame original
     st.dataframe(df_filtrado_original, height=500)
 
-    # Entrada de usuario para buscar en Chatbot
+    # Create or update the st.text_area
     user_input = st.text_area("Ingresa tu consulta:", " ")
 
-    col1, col2, col3= st.columns(3)
-    if col1.button("Obtener recomendación"):  # botón interactivo obtener recomendación del chat
+    col1, col2, col3 = st.columns(3)
+    if col1.button("Obtener recomendación"):
         respuesta_gpt3 = gpt3(user_input)
 
         # Mostrar la respuesta
@@ -127,25 +131,23 @@ def pagina_filtros():
         st.write(respuesta_gpt3)
 
         coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', respuesta_gpt3)
-
-        # Autocompletar el filtro de Título con el primer contenido entrecomillado encontrado
         filtro_titulo = st.sidebar.text_input('Filtrar por Título', value=coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else "")
 
         df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
-
         st.write(df_filtrado_chat)
 
-    if col2.button("Búsqueda por voz 🗣"):  # botón interactivo búsqueda por voz
+    if col2.button("Búsqueda por voz 🗣"):
         texto_reconocido = reconocer_audio()
         if texto_reconocido is not None:
-           user_input = texto_reconocido
+            # Update the user_input_area through session_state
+            session_state["value"] = texto_reconocido
 
-    if col3.button("🔊"):  # botón interactivo text to speech
+    if col3.button("Escuchar la respuesta 🔊"):
         if respuesta_gpt3:
             reproducir(respuesta_gpt3)
         else:
             st.warning("No hay respuesta para convertir a voz. Obtén una recomendación primero.")
-    
+
 def pagina_acerca_de():
     st.title('Q&A')
     q_a = [
