@@ -54,7 +54,11 @@ def reconocer_audio():   # función speech to text
             st.error(f"Error en la solicitud al servicio de reconocimiento de voz: {e}")
 
 def pagina_principal():
-  
+
+    st.sidebar.image("https://i.pinimg.com/originals/99/2a/cd/992acd6e668831ecfc46614d3be7b2f7.jpg", use_column_width=True)
+    st.sidebar.image("https://png2.cleanpng.com/sh/159c3b5c0256084944e776162f71b772/L0KzQYm4UcI2N5p6R91yc4Pzfri0jfV1aZR3geZyYz3vf7j2TgBweqVmet5uLX7ohMj2kvsub6NmiNpyY4OwcsPojvQufKMyetN8ZT33cb3yTgJmeKZ5eeZyb36wgrb9ifV4NaVtitdqZD3wc36AUb1xaZhqRaU2NXLpcbW7WMdmOWlne6I3MEO2SYK6UMkyPWU4SagAMEa2SYO6WL5xdpg=/kisspng-metacritic-logo-portable-network-graphics-brand-tr-base-talk-reputation-review-thread-mc-71-page-3-5bfad487e18bc0.0339130915431650639238.png", use_column_width=True)
+    st.sidebar.image("https://png2.cleanpng.com/sh/7e27bae8b90d73404b570d9cd4e0d896/L0KzQYm3WMI1N5D6fZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tfxwb5CyiNH7dHHlfLa0jvV1f5D3g59wcnHzeLrqk71kdJp1Rdtsb372Pbf2kr1nepZqRdtsb379cX7qigJkdJYyi9HsaXHvPYbpVBZmPGdnTNdsOEG6PoO3WMAyPGM7Sac8NUGzSIO3U8MzOmgziNDw/kisspng-computer-icons-logo-portable-network-graphics-clip-icons-for-free-iconza-circle-social-5b7fe46b4ec817.2080142615351082033227.png", use_column_width=True)
+    st.sidebar.image("https://png2.cleanpng.com/sh/3d6b19db85ac5e9148ffe3db8b383f7f/L0KzQYm3U8IxN6ttiZH0aYP2gLBuTfxqdpxqfNt3LXzyd7E0gB9ueKZ5feQ2aXPyfsS0gwV0cZ9qiAU2c4nwcrFzTfxqdpxqfNt3LXnmf7A0VfFjOWg7TagBMHLkcYm1UcE6OWk3S6I6NUK0RYiCVsA3O2o7SpD5bne=/kisspng-linkedin-logo-computer-icons-business-symbol-linkedin-icon-5ab1765660baa8.1191823015215796063962.png", use_column_width=True)
     st.title("¿Qué es Pixel Sync?")
 
     columna_derecha_1, columna_derecha_2 = st.columns(2)
@@ -114,7 +118,7 @@ def pagina_filtros():
     columnas_mostrar = ['Metascore', 'Userscore', 'Título', 'Género', 'Sección', 'Lanzamiento', 'Plataformas']
     df_filtrado_original = df_filtrado_original[columnas_mostrar]
 
-    # Mostrar DataFrame original
+    ## Mostrar DataFrame original
     st.dataframe(df_filtrado_original, height=500)
 
     # Create or update the st.text_area
@@ -163,7 +167,7 @@ def pagina_filtros():
     if 'df_filtrado_chat' in st.session_state and not st.session_state.df_filtrado_chat.empty:
         st.dataframe(st.session_state.df_filtrado_chat)
 
-def pagina_acerca_de():
+def pagina_acerca_de():  # función tercera página
     st.title('Q&A')
     q_a = [
     {
