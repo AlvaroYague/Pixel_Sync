@@ -18,7 +18,7 @@ openai.api_key = token
 
 st.set_page_config(page_icon = '🎮', page_title = 'Pixel Sync')
 
-def obtener_respuesta_gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del chat
+def gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del chat
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -31,11 +31,11 @@ def obtener_respuesta_gpt3(usuario_input):  # Llama a la api de OpenAI y devuelv
 
     return response['choices'][0]['message']['content']
 
-def reconocer_audio():
+def reconocer_audio():   # función speech to text
     recognizer = sr.Recognizer()
 
     with sr.Microphone() as source:
-        st.write("Escuchando... Di algo:")
+        st.write("Escuchando...")
         recognizer.adjust_for_ambient_noise(source)
         audio = recognizer.listen(source)
 
@@ -48,7 +48,7 @@ def reconocer_audio():
         except sr.RequestError as e:
             st.error(f"Error en la solicitud al servicio de reconocimiento de voz: {e}")
 
-def reproducir(texto):
+def reproducir(texto):  # función speech to text
     engine = pyttsx3.init()
     engine.say(texto)
     engine.runAndWait()
@@ -84,11 +84,9 @@ def pagina_principal():
 
 def pagina_filtros():
     st.sidebar.header('Filtros')
-    st.title('Búsqueda')
+    st.title('Busca tu juego ideal')
 
     df_original = pd.read_csv('..\\Proyecto_Final\\data\\metacritic_es.csv')
-
-    respuesta_gpt3 = None 
 
     # Filtrar por Título
     filtro_titulo = st.sidebar.text_input('Filtrar por Título', '')
@@ -117,14 +115,12 @@ def pagina_filtros():
     # Mostrar DataFrame original
     st.dataframe(df_filtrado_original, height=500)
 
-    # Entrada de usuario
+    # Entrada de usuario para buscar en Chatbot
     user_input = st.text_area("Ingresa tu consulta:", " ")
 
-    # Botones para activar/desactivar la entrada y salida de voz al lado del botón "Obtener recomendación"
     col1, col2, col3= st.columns(3)
-    if col1.button("Obtener recomendación"):
-        # Obtener la respuesta de GPT-3.5-turbo
-        respuesta_gpt3 = obtener_respuesta_gpt3(user_input)
+    if col1.button("Obtener recomendación"):  # botón interactivo obtener recomendación del chat
+        respuesta_gpt3 = gpt3(user_input)
 
         # Mostrar la respuesta
         st.write("Recomendación:")
@@ -139,22 +135,14 @@ def pagina_filtros():
 
         st.write(df_filtrado_chat)
 
-    if col2.button("Búsqueda por voz 🗣"):
+    if col2.button("Búsqueda por voz 🗣"):  # botón interactivo búsqueda por voz
         texto_reconocido = reconocer_audio()
         if texto_reconocido is not None:
-            st.text_area("Texto Reconocido:", texto_reconocido)
-            st.text("Texto reconocido automáticamente insertado en el cuadro de consulta.")
-            st.text("Puedes usar este texto para obtener recomendaciones.")
-            # Actualizar el cuadro de texto con el texto reconocido
-            st.session_state.user_input = texto_reconocido
-        if "user_input" not in st.session_state:
-            st.session_state.user_input = ""
+           user_input = texto_reconocido
 
-    if col3.button("🔊"):
+    if col3.button("🔊"):  # botón interactivo text to speech
         if respuesta_gpt3:
-            st.text("Convirtiendo la respuesta en voz...")
             reproducir(respuesta_gpt3)
-            st.text("Reproducción de la respuesta en voz.")
         else:
             st.warning("No hay respuesta para convertir a voz. Obtén una recomendación primero.")
     
