@@ -84,6 +84,7 @@ def pagina_principal():
 
 def pagina_filtros():
     st.sidebar.header('Filtros')
+    st.title('Búsqueda')
 
     df_original = pd.read_csv('..\\Proyecto_Final\\data\\metacritic_es.csv')
 
@@ -159,7 +160,7 @@ def pagina_filtros():
     
 def pagina_acerca_de():
     st.title('Q&A')
-    q_and_a = [
+    q_a = [
     {
         'Pregunta': "¿Cómo funciona la inteligencia artificial en la plataforma de filtrado de juegos?",
         'Respuesta': "La inteligencia artificial en nuestra plataforma de filtrado de juegos utiliza modelos avanzados de procesamiento de lenguaje natural, como GPT-3.5 Turbo de OpenAI. Estos modelos analizan las descripciones de los juegos y las consultas de los usuarios para proporcionar recomendaciones precisas y personalizadas.",
@@ -194,10 +195,10 @@ def pagina_acerca_de():
     }
     ]
 
-    for q_a_pair in q_and_a:
-        pregunta = f"**{q_a_pair['Pregunta']}**"
+    for q in q_a:
+        pregunta = f"**{q['Pregunta']}**"
         st.markdown(pregunta)
-        st.write(q_a_pair['Respuesta'])
+        st.write(q['Respuesta'])
     
 
 # Sección para navegar entre páginas
