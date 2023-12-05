@@ -129,24 +129,22 @@ def pagina_filtros():
 
     col1, col2, col3 = st.columns(3)
     if col1.button("Obtener recomendación 💭"):
-        # Obtiene la recomendación utilizando la función gpt3
-        st.session_state.respuesta_gpt3 = gpt3(user_input_area)
-        # Almacenar texto de usuario en el estado de la sesión
+        # Obtiene la recomendación utilizando la función gpt3()
+        respuesta = gpt3(user_input_area)
+        # Almacena la respuesta y el texto de usuario en el estado de la sesión
+        st.session_state.respuesta_gpt3 = respuesta
         st.session_state.user_input_area = user_input_area
-    if st.session_state.get('respuesta_gpt3'):
+
+    # Mostrar la respuesta si existe en el estado de la sesión
+    if st.session_state.respuesta_gpt3:
         st.write("Recomendación:")
         st.write(st.session_state.respuesta_gpt3)
 
-        # Procesar la respuesta para extraer texto entrecomillado y filtrar dataframe
+        # Si se ha obtenido una nueva recomendación, procesarla para actualizar el dataframe filtrado
         coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', st.session_state.respuesta_gpt3)
-        filtro_titulo = coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else ""
-        df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
-        st.session_state.df_filtrado_chat = df_filtrado_chat
-
-
-        # Almacenar el dataframe filtrado en el estado de la sesión
-    if 'df_filtrado_chat' in st.session_state and not st.session_state.df_filtrado_chat.empty:
-        st.dataframe(st.session_state.df_filtrado_chat)
+        if coincidencias_entrecomilladas:
+            filtro_titulo = coincidencias_entrecomilladas[0]
+            st.session_state.df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
 
 
     if col2.button("Búsqueda por voz 🗣"):
