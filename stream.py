@@ -85,6 +85,7 @@ def pagina_principal():
     columna_izquierda_2.markdown(texto_izquierda, unsafe_allow_html=True)
 
 def pagina_filtros():
+    global respuesta_gpt3
     st.sidebar.header('Filtros')
     st.title('Busca tu juego ideal')
 
@@ -118,34 +119,42 @@ def pagina_filtros():
     st.dataframe(df_filtrado_original, height=500)
 
     # Create or update the st.text_area
-    user_input = st.text_area("Ingresa tu consulta:", " ")
+    if 'user_input_area' not in st.session_state:
+        st.session_state['user_input_area'] = ""
+
+    if 'respuesta_gpt3' not in st.session_state:
+        st.session_state['respuesta_gpt3'] = None
+
+# Create or update the st.text_area with the session state value
+    user_input_area = st.text_area("Ingresa tu consulta:", st.session_state.user_input_area)
 
     col1, col2, col3 = st.columns(3)
-    if col1.button("Obtener recomendación"):
-        respuesta_gpt3 = gpt3(user_input)
+    if col1.button("Obtener recomendación 💭"):
+    # Call your gpt3 function with the current value of user_input_area
+       st.session_state.respuesta_gpt3 = gpt3(user_input_area)
 
-        # Mostrar la respuesta
-        st.write("Recomendación:")
-        st.write(respuesta_gpt3)
+    # Mostrar la respuesta
+       st.write("Recomendación:")
+       st.write(st.session_state.respuesta_gpt3)
 
-        coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', respuesta_gpt3)
-        filtro_titulo = st.sidebar.text_input('Filtrar por Título', value=coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else "")
-
-        df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
-        st.write(df_filtrado_chat)
+    # Process the response to extract enclosed text
+       coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', st.session_state.respuesta_gpt3)
+       filtro_titulo = st.sidebar.text_input('Filtrar por Título',value=coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else "")
+       df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
+       st.write(df_filtrado_chat)
 
     if col2.button("Búsqueda por voz 🗣"):
         texto_reconocido = reconocer_audio()
         if texto_reconocido is not None:
-            # Update the user_input_area through session_state
-            session_state["value"] = texto_reconocido
+            # Update the session state for user_input_area with the recognized text
+            st.session_state.user_input_area = texto_reconocido
 
+# Logic for audio playback
     if col3.button("Escuchar la respuesta 🔊"):
-        if respuesta_gpt3:
-            reproducir(respuesta_gpt3)
+        if st.session_state.respuesta_gpt3:
+            reproducir(st.session_state.respuesta_gpt3)
         else:
             st.warning("No hay respuesta para convertir a voz. Obtén una recomendación primero.")
-
 def pagina_acerca_de():
     st.title('Q&A')
     q_a = [
