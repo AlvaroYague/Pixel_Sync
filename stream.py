@@ -7,6 +7,9 @@ import webbrowser
 import base64
 import io
 import re
+import speech_recognition as sr
+import pyttsx3
+from unidecode import unidecode
 
 with open('openai.txt', 'r') as archivo:
     token = archivo.read()
@@ -14,6 +17,42 @@ with open('openai.txt', 'r') as archivo:
 openai.api_key = token  
 
 st.set_page_config(page_icon = '🎮', page_title = 'Pixel Sync')
+
+def obtener_respuesta_gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del chat
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Eres un experto en videojuegos"},
+            {"role": "user", "content": usuario_input}
+        ],
+        max_tokens=3000,
+        temperature=0.5
+    )
+
+    return response['choices'][0]['message']['content']
+
+def reconocer_audio():
+    recognizer = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        st.write("Escuchando... Di algo:")
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
+
+        try:
+            texto = recognizer.recognize_google(audio, language="es-ES")
+            st.success(f"Texto reconocido: {texto}")
+            return texto
+        except sr.UnknownValueError:
+            st.warning("No se pudo reconocer el audio.")
+        except sr.RequestError as e:
+            st.error(f"Error en la solicitud al servicio de reconocimiento de voz: {e}")
+
+def reproducir(texto):
+    engine = pyttsx3.init()
+    engine.say(texto)
+    engine.runAndWait()
+
 
 def pagina_principal():
   
@@ -44,77 +83,80 @@ def pagina_principal():
     columna_izquierda_2.markdown(texto_izquierda, unsafe_allow_html=True)
 
 def pagina_filtros():
-
-    st.image("https://png2.cleanpng.com/sh/8f37e6e2ef1d3a03b10b795e60125e8a/L0KzQYm3UsA3N5ttiZH0aYP2gLBuTgRpbV5xfdlubnSwf7e0mvVtbJIyjNpuLX3sfrr6iL1kaaEyjNpuLXzod7b1hL1wbl5Bfd5tYT3vebByTgBvb15rgd5uLUXkR4qBVslnOGRpS6Y9Lke1Roa7VcM3OWY2T6s6M0e4SYG4VccveJ9s/kisspng-the-legend-of-zelda-the-minish-cap-the-legend-of-zelda-link-png-file-5a79869f03d344.7265453615179137590157.png", use_column_width=False, width=200)
     st.sidebar.header('Filtros')
 
-    df = pd.read_csv('..\\Proyecto_Final\\data\\metacritic_es.csv')
+    df_original = pd.read_csv('..\\Proyecto_Final\\data\\metacritic_es.csv')
 
-    # Crear dos columnas para organizar el diseño
-    column1, column2 = st.columns([2, 1])
+    respuesta_gpt3 = None 
 
     # Filtrar por Título
-    filtro_titulo = column2.text_input('Filtrar por Título', '')
-    df_filtrado = df[df['Título'].str.contains(filtro_titulo, case=False)]
+    filtro_titulo = st.sidebar.text_input('Filtrar por Título', '')
+    df_filtrado_original = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
 
-    # Filtrar por Plataforma con opción "Por defecto"
-    plataforma_options = ['Por defecto'] + df_filtrado['Sección'].unique().tolist()
-    plataforma = column2.selectbox('Filtrar por Plataforma', plataforma_options)
+    # Filtrar por Plataforma
+    plataforma_options = ['Por defecto'] + df_filtrado_original['Sección'].unique().tolist()
+    plataforma = st.sidebar.selectbox('Filtrar por Plataforma', plataforma_options)
     if plataforma != 'Por defecto':
-        df_filtrado = df_filtrado[df_filtrado['Sección'] == plataforma]
+        df_filtrado_original = df_filtrado_original[df_filtrado_original['Sección'] == plataforma]
 
-    # Filtrar por Género con opción "Por defecto"
-    genero_options = ['Por defecto'] + df_filtrado['Género'].unique().tolist()
-    genero = column2.selectbox('Filtrar por Género', genero_options)
+    # Filtrar por Género
+    genero_options = ['Por defecto'] + df_filtrado_original['Género'].unique().tolist()
+    genero = st.sidebar.selectbox('Filtrar por Género', genero_options)
     if genero != 'Por defecto':
-        df_filtrado = df_filtrado[df_filtrado['Género'] == genero]
+        df_filtrado_original = df_filtrado_original[df_filtrado_original['Género'] == genero]
 
     # Filtrar por Metascore
-    metascore_range = column2.slider('Filtrar por Metascore', min_value=df_filtrado['Metascore'].min(), max_value=df_filtrado['Metascore'].max(), value=[df_filtrado['Metascore'].min(), df_filtrado['Metascore'].max()])
-    df_filtrado = df_filtrado[df_filtrado['Metascore'].between(metascore_range[0], metascore_range[1])]
+    metascore_range = st.sidebar.slider('Filtrar por Metascore', min_value=df_filtrado_original['Metascore'].min(), max_value=df_filtrado_original['Metascore'].max(), value=[df_filtrado_original['Metascore'].min(), df_filtrado_original['Metascore'].max()])
+    df_filtrado_original = df_filtrado_original[df_filtrado_original['Metascore'].between(metascore_range[0], metascore_range[1])]
 
-    # Seleccionar las columnas que deseas mostrar
-    columnas_mostrar = ['Metascore', 'Userscore', 'Título', 'Género', 'Sección', 'Lanzamiento', 'Distribuidor']
-    df_filtrado_mostrar = df_filtrado[columnas_mostrar]
+    # Mostrar DataFrame original
+    columnas_mostrar = ['Metascore', 'Userscore', 'Título', 'Género', 'Sección', 'Lanzamiento', 'Plataformas']
+    df_filtrado_original = df_filtrado_original[columnas_mostrar]
 
-    if column2.button('Restablecer Filtros'):
-       df_filtrado = df.copy()
+    # Mostrar DataFrame original
+    st.dataframe(df_filtrado_original, height=500)
 
-    # Mostrar DataFrame filtrado
-    column1.dataframe(df_filtrado_mostrar)
+    # Entrada de usuario
+    user_input = st.text_area("Ingresa tu consulta:", " ")
 
-    user_input = st.text_area("Ingresa tu búsqueda:", " ")
+    # Botones para activar/desactivar la entrada y salida de voz al lado del botón "Obtener recomendación"
+    col1, col2, col3= st.columns(3)
+    if col1.button("Obtener recomendación"):
+        # Obtener la respuesta de GPT-3.5-turbo
+        respuesta_gpt3 = obtener_respuesta_gpt3(user_input)
 
-# Botón para procesar la entrada del usuario
-    if st.button("Generar respuesta"):
-        # Llama a la API de OpenAI con el texto del usuario
-        response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Eres un experto en videojuegos"},
-            {"role": "user", "content": user_input}
-        ],
-        max_tokens=3000,
-        temperature=0.5
-    )
-
-
-        # Muestra la respuesta de OpenAI
+        # Mostrar la respuesta
         st.write("Recomendación:")
-        st.write(response['choices'][0]['message']['content'])
+        st.write(respuesta_gpt3)
 
-        # Utilizar expresiones regulares para encontrar el contenido entrecomillado
-        coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', response['choices'][0]['message']['content'] )
+        coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', respuesta_gpt3)
 
         # Autocompletar el filtro de Título con el primer contenido entrecomillado encontrado
-        filtro_titulo = st.text_input('Filtrar por Título', value=coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else "")
+        filtro_titulo = st.sidebar.text_input('Filtrar por Título', value=coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else "")
 
-        # Filtrar el DataFrame por Título
-        df_filtrado = df[df['Título'].str.contains(filtro_titulo, case=False)]
+        df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
 
-        # Mostrar el DataFrame filtrado
-        st.write('DataFrame Filtrado:', df_filtrado)
+        st.write(df_filtrado_chat)
 
+    if col2.button("Búsqueda por voz 🗣"):
+        texto_reconocido = reconocer_audio()
+        if texto_reconocido is not None:
+            st.text_area("Texto Reconocido:", texto_reconocido)
+            st.text("Texto reconocido automáticamente insertado en el cuadro de consulta.")
+            st.text("Puedes usar este texto para obtener recomendaciones.")
+            # Actualizar el cuadro de texto con el texto reconocido
+            st.session_state.user_input = texto_reconocido
+        if "user_input" not in st.session_state:
+            st.session_state.user_input = ""
+
+    if col3.button("🔊"):
+        if respuesta_gpt3:
+            st.text("Convirtiendo la respuesta en voz...")
+            reproducir(respuesta_gpt3)
+            st.text("Reproducción de la respuesta en voz.")
+        else:
+            st.warning("No hay respuesta para convertir a voz. Obtén una recomendación primero.")
+    
 def pagina_acerca_de():
     st.title('Q&A')
     q_and_a = [
