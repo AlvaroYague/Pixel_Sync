@@ -53,9 +53,6 @@ def reconocer_audio():   # función speech to text
         except sr.RequestError as e:
             st.error(f"Error en la solicitud al servicio de reconocimiento de voz: {e}")
 
-
-
-
 def pagina_principal():
   
     st.title("¿Qué es Pixel Sync?")
@@ -85,11 +82,13 @@ def pagina_principal():
     columna_izquierda_2.markdown(texto_izquierda, unsafe_allow_html=True)
 
 def pagina_filtros():
-    global respuesta_gpt3
     st.sidebar.header('Filtros')
     st.title('Busca tu juego ideal')
 
-    df_original = pd.read_csv('..\\Proyecto_Final\\data\\metacritic_es.csv')
+    if 'df_original' not in st.session_state:
+        st.session_state.df_original = pd.read_csv('..\\Proyecto_Final\\data\\metacritic_es.csv')
+
+    df_original = st.session_state.df_original
 
     # Filtrar por Título
     filtro_titulo = st.sidebar.text_input('Filtrar por Título', '')
@@ -126,35 +125,45 @@ def pagina_filtros():
         st.session_state['respuesta_gpt3'] = None
 
 # Create or update the st.text_area with the session state value
-    user_input_area = st.text_area("Ingresa tu consulta:", st.session_state.user_input_area)
+    user_input_area = st.text_area("Ingresa tu consulta:", st.session_state.get('user_input_area', ''))
 
     col1, col2, col3 = st.columns(3)
     if col1.button("Obtener recomendación 💭"):
-    # Call your gpt3 function with the current value of user_input_area
-       st.session_state.respuesta_gpt3 = gpt3(user_input_area)
+        # Obtiene la recomendación utilizando la función gpt3
+        st.session_state.respuesta_gpt3 = gpt3(user_input_area)
+        # Almacenar texto de usuario en el estado de la sesión
+        st.session_state.user_input_area = user_input_area
+        # Mostrar la respuesta
+        st.write("Recomendación:")
+        st.write(st.session_state.respuesta_gpt3)
 
-    # Mostrar la respuesta
-       st.write("Recomendación:")
-       st.write(st.session_state.respuesta_gpt3)
+        # Procesar la respuesta para extraer texto entrecomillado y filtrar dataframe
+        coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', st.session_state.respuesta_gpt3)
+        if coincidencias_entrecomilladas:
+            filtro_titulo = coincidencias_entrecomilladas[0]
+            df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
+        else:
+            df_filtrado_chat = pd.DataFrame()  # Si no hay coincidencias, crea un dataframe vacío
 
-    # Process the response to extract enclosed text
-       coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', st.session_state.respuesta_gpt3)
-       filtro_titulo = st.sidebar.text_input('Filtrar por Título',value=coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else "")
-       df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
-       st.write(df_filtrado_chat)
+        # Almacenar el dataframe filtrado en el estado de la sesión
+        st.session_state.df_filtrado_chat = df_filtrado_chat
 
     if col2.button("Búsqueda por voz 🗣"):
         texto_reconocido = reconocer_audio()
         if texto_reconocido is not None:
-            # Update the session state for user_input_area with the recognized text
+            # Actualizar el estado de la sesión con el texto reconocido
             st.session_state.user_input_area = texto_reconocido
 
-# Logic for audio playback
     if col3.button("Escuchar la respuesta 🔊"):
-        if st.session_state.respuesta_gpt3:
+        if st.session_state.get('respuesta_gpt3'):
             reproducir(st.session_state.respuesta_gpt3)
         else:
             st.warning("No hay respuesta para convertir a voz. Obtén una recomendación primero.")
+
+    # Mostrar el dataframe filtrado a partir de la respuesta del chat, si existe
+    if 'df_filtrado_chat' in st.session_state and not st.session_state.df_filtrado_chat.empty:
+        st.dataframe(st.session_state.df_filtrado_chat)
+
 def pagina_acerca_de():
     st.title('Q&A')
     q_a = [
