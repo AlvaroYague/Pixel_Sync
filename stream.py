@@ -133,20 +133,21 @@ def pagina_filtros():
         st.session_state.respuesta_gpt3 = gpt3(user_input_area)
         # Almacenar texto de usuario en el estado de la sesión
         st.session_state.user_input_area = user_input_area
-        # Mostrar la respuesta
+    if st.session_state.get('respuesta_gpt3'):
         st.write("Recomendación:")
         st.write(st.session_state.respuesta_gpt3)
 
         # Procesar la respuesta para extraer texto entrecomillado y filtrar dataframe
         coincidencias_entrecomilladas = re.findall(r'"([^"]*)"', st.session_state.respuesta_gpt3)
-        if coincidencias_entrecomilladas:
-            filtro_titulo = coincidencias_entrecomilladas[0]
-            df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
-        else:
-            df_filtrado_chat = pd.DataFrame()  # Si no hay coincidencias, crea un dataframe vacío
+        filtro_titulo = coincidencias_entrecomilladas[0] if coincidencias_entrecomilladas else ""
+        df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
+        st.session_state.df_filtrado_chat = df_filtrado_chat
+
 
         # Almacenar el dataframe filtrado en el estado de la sesión
-        st.session_state.df_filtrado_chat = df_filtrado_chat
+    if 'df_filtrado_chat' in st.session_state and not st.session_state.df_filtrado_chat.empty:
+        st.dataframe(st.session_state.df_filtrado_chat)
+
 
     if col2.button("Búsqueda por voz 🗣"):
         texto_reconocido = reconocer_audio()
