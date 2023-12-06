@@ -13,13 +13,16 @@ import pyttsx3
 with open('openai.txt', 'r') as archivo:
     token = archivo.read()
 
-openai.api_key = st.secret['token']
+openai.api_key = token
 st.set_page_config(page_icon = '🎮', page_title = 'Pixel Sync')
 
 def reproducir(texto):  # función speech to text
     engine = pyttsx3.init()
     engine.say(texto)
     engine.runAndWait()
+    engine.setProperty('rate', 140)
+    engine.setProperty('volume', 0.9)
+    engine.setProperty('voice', 'spanish')
 
 def gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del chat
     response = openai.ChatCompletion.create(
@@ -167,18 +170,11 @@ def pagina_filtros():
 
 def pagina_acerca_de():  # función tercera página
     st.title('Q&A')
+    st.write('Aquí encontrarás las preguntas más frecuentes sobre Pixel Sync. Si no encuentras la respuesta a tu pregunta, no dudes en contactarnos.')
     q_a = [
     {
         'Pregunta': "¿Cómo funciona la inteligencia artificial en la plataforma de filtrado de juegos?",
         'Respuesta': "La inteligencia artificial en nuestra plataforma de filtrado de juegos utiliza modelos avanzados de procesamiento de lenguaje natural, como GPT-3.5 Turbo de OpenAI. Estos modelos analizan las descripciones de los juegos y las consultas de los usuarios para proporcionar recomendaciones precisas y personalizadas.",
-    },
-    {
-        'Pregunta': "¿Qué hace que nuestra plataforma sea única en comparación con otras herramientas de filtrado de juegos?",
-        'Respuesta': "Lo que nos destaca es nuestra capacidad para comprender no solo los filtros convencionales, como plataforma y género, sino también las descripciones detalladas de los usuarios. Nuestra inteligencia artificial no se limita a palabras clave; puede captar matices y preferencias específicas, ofreciendo recomendaciones realmente personalizadas.",
-    },
-    {
-        'Pregunta': "¿Puedo filtrar por características específicas que no son convencionales?",
-        'Respuesta': "¡Absolutamente! Nuestra plataforma permite a los usuarios filtrar juegos por una amplia gama de características, desde la narrativa y los elementos de juego hasta detalles más específicos como la atmósfera del juego, el estilo artístico y la complejidad del argumental",
     },
     {
         'Pregunta': "¿Cómo puedo ajustar la precisión de las recomendaciones?",
@@ -193,10 +189,6 @@ def pagina_acerca_de():  # función tercera página
         'Respuesta': "Al seleccionar un juego, nuestra plataforma proporciona información detallada, incluyendo reseñas de usuarios, puntuaciones de críticos, detalles de la trama, y enlaces a recursos externos como trailers y reseñas especializadas.",
     },
     {
-        'Pregunta': "¿Hay alguna función para descubrir juegos nuevos y emocionantes?",
-        'Respuesta': "¡Sí! Ofrecemos funciones de descubrimiento que sugieren juegos basándose en tus preferencias actuales. Esto te permite explorar títulos que podrían estar fuera de tu radar pero que se ajustan perfectamente a tus gustos.",
-    },
-    {
         'Pregunta': "¿Cómo garantizan la privacidad de mis datos al utilizar la plataforma?",
         'Respuesta': "La privacidad y seguridad de los datos son fundamentales. No almacenamos información personal sin tu consentimiento explícito y nos adherimos a estrictas políticas de privacidad para proteger tus datos en todo momento."
     }
@@ -205,7 +197,7 @@ def pagina_acerca_de():  # función tercera página
     for q in q_a:
         pregunta = f"**{q['Pregunta']}**"
         st.markdown(pregunta)
-        st.write(q['Respuesta'])
+        st.write(q['Respuesta'], justify='center')
     
 
 # Sección para navegar entre páginas
