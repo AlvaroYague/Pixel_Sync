@@ -13,8 +13,7 @@ import pyttsx3
 with open('openai.txt', 'r') as archivo:
     token = archivo.read()
 
-openai.api_key = token  
-
+openai.api_key = st.secret['token']
 st.set_page_config(page_icon = '🎮', page_title = 'Pixel Sync')
 
 def reproducir(texto):  # función speech to text
@@ -53,12 +52,10 @@ def reconocer_audio():   # función speech to text
         except sr.RequestError as e:
             st.error(f"Error en la solicitud al servicio de reconocimiento de voz: {e}")
 
-def pagina_principal():
-
-    st.sidebar.image("https://i.pinimg.com/originals/99/2a/cd/992acd6e668831ecfc46614d3be7b2f7.jpg", use_column_width=True)
-    st.sidebar.image("https://png2.cleanpng.com/sh/159c3b5c0256084944e776162f71b772/L0KzQYm4UcI2N5p6R91yc4Pzfri0jfV1aZR3geZyYz3vf7j2TgBweqVmet5uLX7ohMj2kvsub6NmiNpyY4OwcsPojvQufKMyetN8ZT33cb3yTgJmeKZ5eeZyb36wgrb9ifV4NaVtitdqZD3wc36AUb1xaZhqRaU2NXLpcbW7WMdmOWlne6I3MEO2SYK6UMkyPWU4SagAMEa2SYO6WL5xdpg=/kisspng-metacritic-logo-portable-network-graphics-brand-tr-base-talk-reputation-review-thread-mc-71-page-3-5bfad487e18bc0.0339130915431650639238.png", use_column_width=True)
-    st.sidebar.image("https://png2.cleanpng.com/sh/7e27bae8b90d73404b570d9cd4e0d896/L0KzQYm3WMI1N5D6fZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tfxwb5CyiNH7dHHlfLa0jvV1f5D3g59wcnHzeLrqk71kdJp1Rdtsb372Pbf2kr1nepZqRdtsb379cX7qigJkdJYyi9HsaXHvPYbpVBZmPGdnTNdsOEG6PoO3WMAyPGM7Sac8NUGzSIO3U8MzOmgziNDw/kisspng-computer-icons-logo-portable-network-graphics-clip-icons-for-free-iconza-circle-social-5b7fe46b4ec817.2080142615351082033227.png", use_column_width=True)
-    st.sidebar.image("https://png2.cleanpng.com/sh/3d6b19db85ac5e9148ffe3db8b383f7f/L0KzQYm3U8IxN6ttiZH0aYP2gLBuTfxqdpxqfNt3LXzyd7E0gB9ueKZ5feQ2aXPyfsS0gwV0cZ9qiAU2c4nwcrFzTfxqdpxqfNt3LXnmf7A0VfFjOWg7TagBMHLkcYm1UcE6OWk3S6I6NUK0RYiCVsA3O2o7SpD5bne=/kisspng-linkedin-logo-computer-icons-business-symbol-linkedin-icon-5ab1765660baa8.1191823015215796063962.png", use_column_width=True)
+def pagina_principal():  # función primera página
+    st.sidebar.image("https://png2.cleanpng.com/sh/159c3b5c0256084944e776162f71b772/L0KzQYm4UcI2N5p6R91yc4Pzfri0jfV1aZR3geZyYz3vf7j2TgBweqVmet5uLX7ohMj2kvsub6NmiNpyY4OwcsPojvQufKMyetN8ZT33cb3yTgJmeKZ5eeZyb36wgrb9ifV4NaVtitdqZD3wc36AUb1xaZhqRaU2NXLpcbW7WMdmOWlne6I3MEO2SYK6UMkyPWU4SagAMEa2SYO6WL5xdpg=/kisspng-metacritic-logo-portable-network-graphics-brand-tr-base-talk-reputation-review-thread-mc-71-page-3-5bfad487e18bc0.0339130915431650639238.png", width=300)
+    st.sidebar.image("https://png2.cleanpng.com/sh/7e27bae8b90d73404b570d9cd4e0d896/L0KzQYm3WMI1N5D6fZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tfxwb5CyiNH7dHHlfLa0jvV1f5D3g59wcnHzeLrqk71kdJp1Rdtsb372Pbf2kr1nepZqRdtsb379cX7qigJkdJYyi9HsaXHvPYbpVBZmPGdnTNdsOEG6PoO3WMAyPGM7Sac8NUGzSIO3U8MzOmgziNDw/kisspng-computer-icons-logo-portable-network-graphics-clip-icons-for-free-iconza-circle-social-5b7fe46b4ec817.2080142615351082033227.png", width=300)
+    st.sidebar.image("https://png2.cleanpng.com/sh/97f2ed87e11014b68eed2c63b1afe096/L0KzQYm3VcI2N6hwkZH0aYP2gLBuTgNwa5pmhJ92ZXTscX7zif5sbZVuhp9sb33zhcXskr1qa5Dzi591b3fyPbXskBt1d6EyTdQ5OEHpSYO9UfFka2MzUaIDNEm5R4a4VcI4OmYASKQBNECzQXB3jvc=/kisspng-social-media-linkedin-computer-icons-logo-desktop-5b081f9261acc2.9084967515272590264001.png", width=300)
     st.title("¿Qué es Pixel Sync?")
 
     columna_derecha_1, columna_derecha_2 = st.columns(2)
@@ -114,6 +111,7 @@ def pagina_filtros():
     metascore_range = st.sidebar.slider('Filtrar por Metascore', min_value=df_filtrado_original['Metascore'].min(), max_value=df_filtrado_original['Metascore'].max(), value=[df_filtrado_original['Metascore'].min(), df_filtrado_original['Metascore'].max()])
     df_filtrado_original = df_filtrado_original[df_filtrado_original['Metascore'].between(metascore_range[0], metascore_range[1])]
 
+
     # Mostrar DataFrame original
     columnas_mostrar = ['Metascore', 'Userscore', 'Título', 'Género', 'Sección', 'Lanzamiento', 'Plataformas']
     df_filtrado_original = df_filtrado_original[columnas_mostrar]
@@ -129,7 +127,7 @@ def pagina_filtros():
         st.session_state['respuesta_gpt3'] = None
 
 # Create or update the st.text_area with the session state value
-    user_input_area = st.text_area("Ingresa tu consulta:", st.session_state.get('user_input_area', ''))
+    user_input_area = st.text_area("Ingresa tu consulta y pulsa Obtener recomendación:", st.session_state.get('user_input_area', ''))
 
     col1, col2, col3 = st.columns(3)
     if col1.button("Obtener recomendación 💭"):
