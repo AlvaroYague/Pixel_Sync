@@ -21,10 +21,13 @@ El motor de búsqueda es muy sencillo. En la página "Búsqueda" podrás encontr
 Por otro lado, en el cuadro de texto podrás escribir una descripción tan detallada como requieras, y pulsando el botón "Obtener recomendación", la IA te devolverá el juego que más se adecúe a tu descripción, generando un breve resumen del mismo y todos los datos de dicho juego en nuestra base de datos.
 
 A continuación, adjunto un vídeo para que tengas una referencia más visual:
-
-https://github.com/AlvaroYague/Pixel_Sync/assets/145923518/bf43e676-1fc1-4923-86cc-edb0e0d76ebd
-
+<details>
+<summary> Vídeo </summary>
+<br>
+  https://github.com/AlvaroYague/Pixel_Sync/assets/145923518/bf43e676-1fc1-4923-86cc-edb0e0d76ebd 
+</details>
 ------------------------------------------------------------- 
+
 #### Por último, queda adjunto todo el proceso que se ha seguido para obtener la base de datos de Pixel Sync :
 
 <details>
