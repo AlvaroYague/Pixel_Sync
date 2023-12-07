@@ -22,7 +22,7 @@ Por otro lado, en el cuadro de texto podrás escribir una descripción tan detal
 
 A continuación, adjunto un vídeo para que tengas una referencia más visual:
 
-![Video](https://github.com/AlvaroYague/Pixel_Sync/blob/main/images/stream.mp4)
+
 ------------------------------------------------------------- 
 #### Por último, queda adjunto todo el proceso que se ha seguido para obtener la base de datos de Pixel Sync :
 
