@@ -29,6 +29,7 @@ def reproducir(texto):  # función texto a audio
     engine.setProperty('voice', 'spanish')
     engine.say(texto)
     engine.runAndWait()
+    
 
 def silenciar():  # función para silenciar el audio
     global engine
@@ -50,6 +51,7 @@ def gpt3(usuario_input):  # función para llamar a la api de OpenAI usando GPT-3
     respuesta = response['choices'][0]['message']['content']
 
     return respuesta
+
 
 def reconocer_audio():   # función audio a texto 
     recognizer = sr.Recognizer()

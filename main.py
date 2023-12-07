@@ -17,7 +17,6 @@ openai.api_key = token
 st.set_page_config(page_icon = '🎮', page_title = 'Pixel Sync')
 
 
-
 def pagina_principal():  # función primera página
     st.sidebar.image("https://png2.cleanpng.com/sh/159c3b5c0256084944e776162f71b772/L0KzQYm4UcI2N5p6R91yc4Pzfri0jfV1aZR3geZyYz3vf7j2TgBweqVmet5uLX7ohMj2kvsub6NmiNpyY4OwcsPojvQufKMyetN8ZT33cb3yTgJmeKZ5eeZyb36wgrb9ifV4NaVtitdqZD3wc36AUb1xaZhqRaU2NXLpcbW7WMdmOWlne6I3MEO2SYK6UMkyPWU4SagAMEa2SYO6WL5xdpg=/kisspng-metacritic-logo-portable-network-graphics-brand-tr-base-talk-reputation-review-thread-mc-71-page-3-5bfad487e18bc0.0339130915431650639238.png", width=300)
     st.title("¿Qué es Pixel Sync?")
