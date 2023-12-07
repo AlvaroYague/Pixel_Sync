@@ -3,13 +3,13 @@
 <div style="text-align: justify;">
 
 # ¿QUÉ ES PIXEL SYNC?
-Pixel Sync es una plataforma de búsqueda y filtrado de videojuegos que nace de la idea de acabar con esos largos períodos de búsqueda por culpa filtros superficiales que apenas nos dejan profundizar en nuestras búsquedas cuando tenemos clara un idea. Bebiendo directamente desde la base de datos de [Metacritic](https://www.metacritic.com/game/), Pixel Sync ofrece un amplio catálogo de videojuegos que abarcan todas las generaciones de consolas, desde los 90's hasta la actualidad, para garantizar que encuentres tu juego ideal.
+**Pixel Sync es una plataforma de búsqueda y filtrado de videojuegos** que nace de la idea de acabar con esos largos períodos de búsqueda por culpa filtros superficiales que apenas nos dejan profundizar en nuestras búsquedas cuando tenemos clara un idea. Bebiendo directamente desde la base de datos de [Metacritic](https://www.metacritic.com/game/), Pixel Sync ofrece un amplio catálogo de videojuegos que abarcan todas las generaciones de consolas, desde los 90's hasta la actualidad, para garantizar que encuentres tu juego ideal.
 
 ## ¿Qué nos diferencia de otras plataformas?
 
-Pixel Sync cuenta con la implementación de inteligencia artificial como motor de búsqueda, con la finalidad de recomendarte el juego que más encaje con tus gustos y descripciones, llevándote directo a los juegos que se alinean perfectamente con tus preferencias.
+Pixel Sync cuenta con la implementación de **inteligencia artificial** como motor de búsqueda, con la finalidad de recomendarte el juego que más encaje con tus gustos y descripciones, llevándote directo a los juegos que se alinean perfectamente con tus preferencias.
 
-La inteligencia artificial de Pixel Sync analiza no solo las características básicas de un juego, como su título, plataforma y género, sino que también profundizan en tus preferencias individuales. Este enfoque permite a Pixel Sync entender tus gustos y descripciones de una manera más holística, llevándote directamente a los juegos que realmente se alinean con tus preferencias únicas.
+La **inteligencia artificial** de Pixel Sync analiza no solo las características básicas de un juego, como su título, plataforma y género, sino que también profundizan en tus preferencias individuales. Este enfoque permite a Pixel Sync entender tus gustos y descripciones de una manera más holística, llevándote directamente a los juegos que realmente se alinean con tus preferencias únicas.
 
 ## Características destacadas:
 - 🕹 **Búsqueda Inteligente**: Descubre nuevos juegos adaptados a tus gustos.
@@ -20,9 +20,9 @@ La inteligencia artificial de Pixel Sync analiza no solo las características b�
 
 ## ¿Cómo funciona la plataforma?
 
-El motor de búsqueda es muy sencillo. En la página "Búsqueda" podrás encontrar la base de datos con una serie de filtros tales como "Título", "Plataforma", "Género" o "Metascore", por si quieres explorar los datos con filtros un poco más superficiales.
+El motor de búsqueda es muy sencillo. En la página **"Búsqueda"** podrás encontrar la base de datos con una serie de filtros tales como **"Título"**, **"Plataforma"**, **"Género"** o **"Metascore"**, por si quieres explorar los datos con filtros un poco más superficiales.
 
-Por otro lado, en el cuadro de texto podrás escribir una descripción tan detallada como requieras, y pulsando el botón "Obtener recomendación", la IA te devolverá el juego que más se adecúe a tu descripción, generando un breve resumen del mismo y todos los datos de dicho juego en nuestra base de datos.
+Por otro lado, en el cuadro de texto podrás escribir una descripción tan detallada como requieras, y pulsando el botón **"Obtener recomendación"**, la IA te devolverá el juego que más se adecúe a tu descripción, generando un breve resumen del mismo y todos los datos de dicho juego en nuestra base de datos.
 
 A continuación, adjunto un vídeo para que tengas una referencia más visual:
 
