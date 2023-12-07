@@ -14,7 +14,8 @@ Pixel Sync cuenta con la implementación de inteligencia artificial como motor d
 
 🚀 **Asesoramiento IA**: Deja que la inteligencia artificial te guíe hacia experiencias de juego emocionantes.
 
-<details>
+
+
 <summary>ETL - Extracción, Transformación y Carga de Datos</summary>
 <br>
 Todos los archivos de datos se encuentran en la carpeta "data".
@@ -32,11 +33,10 @@ Una vez recabados los datos, utilizamos la librería Pandas de Python para trans
 
 ### 🚚 Carga en la Base de Datos SQL:
 
-Finalmente, dirigí mis datos hacia su nuevo hogar en una base de datos SQL. Gracias a la integración de Pandas con SQL, este proceso fue como construir un puente cósmico directo desde los datos transformados hasta la base de datos, asegurando un viaje suave y sin contratiempos.
+Finalmente, con los datos ya transformados, estos son importados a una base de datos en SQL creada y exportada desde Python, con la finalidad de tener un acceso sencillo a los mismo a la hora de modificarlos y actualizarlos.
 
 ### Extra: Traducción de los datos
 
-
-
+Como extra, se ha realizado una pequeña transformación de datos y aplicación de la librería GoogleTrans para traducir toda la base de datos al español, ya que en primera instancia esta se encuentra en inglés. Como resultado, obtenermos el archivo "metacritic_es.csv".
 </details>
 
