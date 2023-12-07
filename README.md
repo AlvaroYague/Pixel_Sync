@@ -14,7 +14,7 @@ La **inteligencia artificial** de Pixel Sync analiza no solo las característica
 ## Características destacadas:
 - 🕹 **Búsqueda Inteligente**: Descubre nuevos juegos adaptados a tus gustos.
 
-- 🎭 **Filtrado Avanzado**: Personaliza tus preferencias por título, plataforma y género.
+- 🎭 **Filtrado Avanzado**: Personaliza tus preferencias por título, plataforma, puntuación, año...
 
 - 🚀 **Asesoramiento IA**: Deja que la inteligencia artificial te guíe hacia experiencias de juego emocionantes.
 
