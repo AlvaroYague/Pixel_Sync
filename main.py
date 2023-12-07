@@ -16,51 +16,7 @@ with open('openai.txt', 'r') as archivo:
 openai.api_key = token
 st.set_page_config(page_icon = '🎮', page_title = 'Pixel Sync')
 
-def reproducir(texto):  # función speech to text
-    global engine
-    engine = pyttsx3.init()
-    engine.setProperty('rate', 140)
-    engine.setProperty('volume', 0.9)
-    engine.setProperty('voice', 'spanish')
-    engine.say(texto)
-    engine.runAndWait()
 
-def silenciar():
-    global engine
-    engine = pyttsx3.init()
-    engine.setProperty('volume', 0.0)
-
-
-def gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del chat
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Eres un experto en videojuegos"},
-            {"role": "user", "content": usuario_input}
-        ],
-        max_tokens=3000,
-        temperature=0.5
-    )
-    respuesta = response['choices'][0]['message']['content']
-
-    return respuesta
-
-def reconocer_audio():   # función speech to text
-    recognizer = sr.Recognizer()
-
-    with sr.Microphone() as source:
-        st.write("Escuchando...")
-        recognizer.adjust_for_ambient_noise(source)
-        audio = recognizer.listen(source)
-
-        try:
-            texto = recognizer.recognize_google(audio, language="es-ES")
-            st.success(f"Texto reconocido: {texto}")
-            return texto
-        except sr.UnknownValueError:
-            st.warning("No se pudo reconocer el audio.")
-        except sr.RequestError as e:
-            st.error(f"Error en la solicitud al servicio de reconocimiento de voz: {e}")
 
 def pagina_principal():  # función primera página
     st.sidebar.image("https://png2.cleanpng.com/sh/159c3b5c0256084944e776162f71b772/L0KzQYm4UcI2N5p6R91yc4Pzfri0jfV1aZR3geZyYz3vf7j2TgBweqVmet5uLX7ohMj2kvsub6NmiNpyY4OwcsPojvQufKMyetN8ZT33cb3yTgJmeKZ5eeZyb36wgrb9ifV4NaVtitdqZD3wc36AUb1xaZhqRaU2NXLpcbW7WMdmOWlne6I3MEO2SYK6UMkyPWU4SagAMEa2SYO6WL5xdpg=/kisspng-metacritic-logo-portable-network-graphics-brand-tr-base-talk-reputation-review-thread-mc-71-page-3-5bfad487e18bc0.0339130915431650639238.png", width=300)
