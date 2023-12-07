@@ -35,9 +35,9 @@ https://github.com/AlvaroYague/Pixel_Sync/assets/145923518/bf43e676-1fc1-4923-86
 <details>
 <summary>ETL - Extracción, Transformación y Carga de Datos</summary>
 <br>
-Todos los archivos de datos se encuentran en la carpeta "data".
+**Todos los archivos de datos se encuentran en la carpeta *"data"*.
 
-En la carpeta "notebooks" encontrarás cómo se realizó cada proceso:
+En la carpeta *"notebooks"* encontrarás cómo se realizó cada proceso:**
 
 ### 🌐 Extracción de Datos de Metacritic:
 
