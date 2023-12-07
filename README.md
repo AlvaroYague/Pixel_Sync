@@ -1,4 +1,4 @@
-![Alt Img](images\games.gif)
+![Alt Img](images\juegos.gif)
 
 # ¿QUÉ ES PIXEL SYNC?
 Pixel Sync es una plataforma de búsqueda y filtrado de videojuegos que nace de la idea de acabar con esos largos períodos de búsqueda por culpa filtros superficiales que apenas nos dejan profundizar en nuestras búsquedas cuando tenemos clara un idea.
