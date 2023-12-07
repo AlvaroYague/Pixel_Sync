@@ -30,7 +30,7 @@ https://github.com/AlvaroYague/Pixel_Sync/assets/145923518/bf43e676-1fc1-4923-86
   
 ------------------------------------------------------------- 
 
-#### Por último, queda adjunto todo el proceso que se ha seguido para obtener la base de datos de Pixel Sync :
+### Por último, queda adjunto todo el proceso que se ha seguido para obtener la base de datos de Pixel Sync :
 
 <details>
 <summary>ETL - Extracción, Transformación y Carga de Datos</summary>
