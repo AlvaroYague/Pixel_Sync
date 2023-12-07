@@ -1,5 +1,10 @@
 # Funciones a exportar
-
+import pandas as pd
+from googletrans import Translator
+import pyttsx3
+import streamlit as st
+import openai
+import speech_recognition as sr
 
 # Funciones para limpieza de datos
 
@@ -29,7 +34,7 @@ def reproducir(texto):  # función texto a audio
     engine.setProperty('voice', 'spanish')
     engine.say(texto)
     engine.runAndWait()
-    
+
 
 def silenciar():  # función para silenciar el audio
     global engine
