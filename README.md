@@ -1,4 +1,4 @@
-![Alt Img](images\juegos.gif)
+![Alt Img](https://github.com/AlvaroYague/Pixel_Sync/blob/main/images/juegos.gif)
 
 # ¿QUÉ ES PIXEL SYNC?
 Pixel Sync es una plataforma de búsqueda y filtrado de videojuegos que nace de la idea de acabar con esos largos períodos de búsqueda por culpa filtros superficiales que apenas nos dejan profundizar en nuestras búsquedas cuando tenemos clara un idea.
@@ -14,8 +14,23 @@ Pixel Sync cuenta con la implementación de inteligencia artificial como motor d
 
 🚀 **Asesoramiento IA**: Deja que la inteligencia artificial te guíe hacia experiencias de juego emocionantes.
 
+## ¿Cómo funciona la plataforma?
 
+El motor de búsqueda es muy sencillo. En la página "Búsqueda" podrás encontrar la base de datos con una serie de filtros tales como "Título", "Plataforma", "Género" o "Metascore", por si quieres explorar los datos con filtros un poco más superficiales.
 
+Por otro lado, en el cuadro de texto podrás escribir una descripción tan detallada como requieras, y pulsando el botón "Obtener recomendación", la IA te devolverá el juego que más se adecúe a tu descripción, generando un breve resumen del mismo y todos los datos de dicho juego en nuestra base de datos.
+
+A continuación, adjunto un vídeo para que tengas una referencia más visual:
+
+<video width="320" height="240" controls>
+  <source src="images\stream.mp4" type="video/mp4">
+  Tu navegador no soporta el tag de video.
+</video>
+
+------------------------------------------------------------- 
+#### Por último, queda adjunto todo el proceso que se ha seguido para obtener la base de datos de Pixel Sync :
+
+<details>
 <summary>ETL - Extracción, Transformación y Carga de Datos</summary>
 <br>
 Todos los archivos de datos se encuentran en la carpeta "data".
