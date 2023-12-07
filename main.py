@@ -90,9 +90,8 @@ def pagina_principal():  # función primera página
     columna_izquierda_1.image("https://png2.cleanpng.com/sh/48d8a45269f81de7c40111292e54e460/L0KzQYm3VMAyN6ttj5H0aYP2gLBuTf10NaFme592YX6wg8b3hgIue55mi9o2YoLyg37tjCIudppzjNd3ZHAwQ7X6TfFvbF51edV2YX6wRbLqUPM2OmdqUagBYUWxR4GCU8AzQWE2TaQ7NUi1SIO5WcU3NqFzf3==/kisspng-ms-pac-man-super-smash-bros-for-nintendo-3ds-and-pacman-5ac0c526e966a5.709302901522582822956.png", use_column_width=True)
     columna_izquierda_2.markdown(texto_izquierda, unsafe_allow_html=True)
 
-def pagina_filtros():
+def pagina_filtros():  # función segunda página
 
-# Agregar HTML y CSS para la imagen de fondo
     st.sidebar.header('Filtros')
     st.title('Busca tu juego ideal')
 
@@ -126,29 +125,30 @@ def pagina_filtros():
     columnas_mostrar = ['Metascore', 'Userscore', 'Título', 'Género', 'Sección', 'Lanzamiento', 'Plataformas']
     df_filtrado_original = df_filtrado_original[columnas_mostrar]
 
-    ## Mostrar DataFrame original
+    # Mostrar DataFrame original
     st.dataframe(df_filtrado_original, height=500)
 
-    # Create or update the st.text_area
+    # Guardar el dataframe filtrado en el estado de la sesión
+
     if 'user_input_area' not in st.session_state:
         st.session_state['user_input_area'] = ""
 
     if 'respuesta_gpt3' not in st.session_state:
         st.session_state['respuesta_gpt3'] = None
 
-# Create or update the st.text_area with the session state value
+
     user_input_area = st.text_area("Ingresa tu consulta y pulsa Obtener recomendación:", st.session_state.get('user_input_area', ''))
 
+    # Dividimos los botones para output de texto, input de voz, output de voz y silenciar
+
     col1, col2, col3, col4 = st.columns(4)
-    if col1.button("Obtener recomendación 💭"):
-        # Obtiene la recomendación utilizando la función gpt3()
+    if col1.button("Obtener recomendación 💭"): # obtener una recomendación y guardarla en un Session State
         respuesta = gpt3(user_input_area)
-        # Almacena la respuesta y el texto de usuario en el estado de la sesión
         st.session_state.respuesta_gpt3 = respuesta
         st.session_state.user_input_area = user_input_area
 
-    # Mostrar la respuesta si existe en el estado de la sesión
-    if st.session_state.respuesta_gpt3:
+   
+    if st.session_state.respuesta_gpt3:    # mostrar la respuesta si existe en el estado de la sesión
         st.write("Recomendación:")
         st.write(st.session_state.respuesta_gpt3)
 
@@ -159,13 +159,12 @@ def pagina_filtros():
             st.session_state.df_filtrado_chat = df_original[df_original['Título'].str.contains(filtro_titulo, case=False)]
 
 
-    if col2.button("Búsqueda por voz 🗣"):
+    if col2.button("Búsqueda por voz 🗣"):  # ingresar texto mediante reconocimiento de voz
         texto_reconocido = reconocer_audio()
         if texto_reconocido is not None:
-            # Actualizar el estado de la sesión con el texto reconocido
             st.session_state.user_input_area = texto_reconocido
 
-    if col3.button("Escuchar respuesta 🔊"):
+    if col3.button("Escuchar respuesta 🔊"): # escuchar la respuesta mediante texto a voz
         if st.session_state.get('respuesta_gpt3'):
             reproducir(st.session_state.respuesta_gpt3)
         else:
