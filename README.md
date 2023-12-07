@@ -32,29 +32,31 @@ https://github.com/AlvaroYague/Pixel_Sync/assets/145923518/bf43e676-1fc1-4923-86
 
 ### Por último, queda adjunto todo el proceso que se ha seguido para obtener la base de datos de Pixel Sync :
 
-<details>
-<summary>ETL - Extracción, Transformación y Carga de Datos</summary>
+<details style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+  <summary style="font-size: 18px; font-weight: bold;">ETL - Extracción, Transformación y Carga de Datos</summary>
 <br>
-**Todos los archivos de datos se encuentran en la carpeta *"data"*.
 
-En la carpeta *"notebooks"* encontrarás cómo se realizó cada proceso:**
+**Todos los archivos de datos se encuentran en la carpeta *"data"***
+
+**En la carpeta *"notebooks"* encontrarás cómo se realizó cada proceso:**
 
 ### 🌐 Extracción de Datos de Metacritic:
 
-En la fase de extracción, obtuve los datos de [Metacritic](https://www.metacritic.com/game/) a través de una llamada a la API externa de [Apify](https://apify.com/). La base de datos, posteriormente, fue exportada a un archivo .CSV ("metacritic.csv") para proceder a su tranformación y limpieza.
+En la fase de extracción, obtuve los datos de [Metacritic](https://www.metacritic.com/game/) a través de una llamada a la **API externa** de [Apify](https://apify.com/). La base de datos, posteriormente, fue exportada a un archivo .CSV ("metacritic.csv") para proceder a su tranformación y limpieza.
 
 ### 🧹 Transformación con Pandas:
 
-Una vez recabados los datos, utilizamos la librería Pandas de Python para transformar y limpiar los mismos, empezando por una buena exploración del dato, así como la utilización de herramientas tales como limpieza de duplicados, agrupaciones y transformación de valores únicos, tratamiento de nulos...etc. Exportar el resultado nos dará como resultado  "metacritic_transform.csv".
+Una vez recabados los datos, utilizamos la librería **Pandas** de Python para transformar y limpiar los mismos, empezando por una buena *exploración del dato, así como la utilización de herramientas tales como limpieza de duplicados, agrupaciones y transformación de valores únicos, tratamiento de nulos*...etc. Exportar el resultado nos dará como resultado  "metacritic_transform.csv".
 
 
 ### 🚚 Carga en la Base de Datos SQL:
 
-Finalmente, con los datos ya transformados, estos son importados a una base de datos en SQL creada y exportada desde Python, con la finalidad de tener un acceso sencillo a los mismo a la hora de modificarlos y actualizarlos.
+Finalmente, con los datos ya transformados, estos son importados a una **base de datos en SQL** creada y exportada desde Python, con la finalidad de tener un acceso sencillo a los mismo a la hora de modificarlos y actualizarlos.
 
 ### Extra: Traducción de los datos
 
-Como extra, se ha realizado una pequeña transformación de datos y aplicación de la librería GoogleTrans para traducir toda la base de datos al español, ya que en primera instancia esta se encuentra en inglés. Como resultado, obtenermos el archivo "metacritic_es.csv".
+Como extra, se ha realizado una pequeña *transformación de datos y aplicación de la librería GoogleTrans para traducir toda la base de datos al español*, ya que en primera instancia esta se encuentra en inglés. Como resultado, obtenermos el archivo "metacritic_es.csv".
+
 </details>
 
 </div>
