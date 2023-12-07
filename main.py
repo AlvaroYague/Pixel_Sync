@@ -77,7 +77,7 @@ def pagina_filtros():  # función segunda página
     df_filtrado_original = df_filtrado_original[df_filtrado_original['Metascore'].between(metascore_range[0], metascore_range[1])]
 
 
-    # Mostrar DataFrame original
+    # Filtrar DataFrame original
     columnas_mostrar = ['Metascore', 'Userscore', 'Título', 'Género', 'Sección', 'Lanzamiento', 'Plataformas']
     df_filtrado_original = df_filtrado_original[columnas_mostrar]
 
@@ -92,7 +92,8 @@ def pagina_filtros():  # función segunda página
     if 'respuesta_gpt3' not in st.session_state:
         st.session_state['respuesta_gpt3'] = None
 
-
+    # Input de texto para la consulta
+    
     user_input_area = st.text_area("Ingresa tu consulta y pulsa Obtener recomendación:", st.session_state.get('user_input_area', ''))
 
     # Dividimos los botones para output de texto, input de voz, output de voz y silenciar
