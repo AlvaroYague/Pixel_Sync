@@ -17,12 +17,19 @@ openai.api_key = token
 st.set_page_config(page_icon = '🎮', page_title = 'Pixel Sync')
 
 def reproducir(texto):  # función speech to text
+    global engine
     engine = pyttsx3.init()
-    engine.say(texto)
-    engine.runAndWait()
     engine.setProperty('rate', 140)
     engine.setProperty('volume', 0.9)
     engine.setProperty('voice', 'spanish')
+    engine.say(texto)
+    engine.runAndWait()
+
+def silenciar():
+    global engine
+    engine = pyttsx3.init()
+    engine.setProperty('volume', 0.0)
+
 
 def gpt3(usuario_input):  # Llama a la api de OpenAI y devuelve la respuesta del chat
     response = openai.ChatCompletion.create(
@@ -57,8 +64,6 @@ def reconocer_audio():   # función speech to text
 
 def pagina_principal():  # función primera página
     st.sidebar.image("https://png2.cleanpng.com/sh/159c3b5c0256084944e776162f71b772/L0KzQYm4UcI2N5p6R91yc4Pzfri0jfV1aZR3geZyYz3vf7j2TgBweqVmet5uLX7ohMj2kvsub6NmiNpyY4OwcsPojvQufKMyetN8ZT33cb3yTgJmeKZ5eeZyb36wgrb9ifV4NaVtitdqZD3wc36AUb1xaZhqRaU2NXLpcbW7WMdmOWlne6I3MEO2SYK6UMkyPWU4SagAMEa2SYO6WL5xdpg=/kisspng-metacritic-logo-portable-network-graphics-brand-tr-base-talk-reputation-review-thread-mc-71-page-3-5bfad487e18bc0.0339130915431650639238.png", width=300)
-    st.sidebar.image("https://png2.cleanpng.com/sh/7e27bae8b90d73404b570d9cd4e0d896/L0KzQYm3WMI1N5D6fZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6Tfxwb5CyiNH7dHHlfLa0jvV1f5D3g59wcnHzeLrqk71kdJp1Rdtsb372Pbf2kr1nepZqRdtsb379cX7qigJkdJYyi9HsaXHvPYbpVBZmPGdnTNdsOEG6PoO3WMAyPGM7Sac8NUGzSIO3U8MzOmgziNDw/kisspng-computer-icons-logo-portable-network-graphics-clip-icons-for-free-iconza-circle-social-5b7fe46b4ec817.2080142615351082033227.png", width=300)
-    st.sidebar.image("https://png2.cleanpng.com/sh/97f2ed87e11014b68eed2c63b1afe096/L0KzQYm3VcI2N6hwkZH0aYP2gLBuTgNwa5pmhJ92ZXTscX7zif5sbZVuhp9sb33zhcXskr1qa5Dzi591b3fyPbXskBt1d6EyTdQ5OEHpSYO9UfFka2MzUaIDNEm5R4a4VcI4OmYASKQBNECzQXB3jvc=/kisspng-social-media-linkedin-computer-icons-logo-desktop-5b081f9261acc2.9084967515272590264001.png", width=300)
     st.title("¿Qué es Pixel Sync?")
 
     columna_derecha_1, columna_derecha_2 = st.columns(2)
@@ -86,6 +91,8 @@ def pagina_principal():  # función primera página
     columna_izquierda_2.markdown(texto_izquierda, unsafe_allow_html=True)
 
 def pagina_filtros():
+
+# Agregar HTML y CSS para la imagen de fondo
     st.sidebar.header('Filtros')
     st.title('Busca tu juego ideal')
 
@@ -132,7 +139,7 @@ def pagina_filtros():
 # Create or update the st.text_area with the session state value
     user_input_area = st.text_area("Ingresa tu consulta y pulsa Obtener recomendación:", st.session_state.get('user_input_area', ''))
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     if col1.button("Obtener recomendación 💭"):
         # Obtiene la recomendación utilizando la función gpt3()
         respuesta = gpt3(user_input_area)
@@ -158,11 +165,14 @@ def pagina_filtros():
             # Actualizar el estado de la sesión con el texto reconocido
             st.session_state.user_input_area = texto_reconocido
 
-    if col3.button("Escuchar la respuesta 🔊"):
+    if col3.button("Escuchar respuesta 🔊"):
         if st.session_state.get('respuesta_gpt3'):
             reproducir(st.session_state.respuesta_gpt3)
         else:
             st.warning("No hay respuesta para convertir a voz. Obtén una recomendación primero.")
+    
+    if col4.button("Silenciar 🔇"):
+        silenciar()
 
     # Mostrar el dataframe filtrado a partir de la respuesta del chat, si existe
     if 'df_filtrado_chat' in st.session_state and not st.session_state.df_filtrado_chat.empty:
