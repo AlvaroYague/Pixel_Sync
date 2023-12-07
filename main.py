@@ -9,7 +9,7 @@ import io
 import re
 import speech_recognition as sr
 import pyttsx3
-from funciones import *
+from src.funciones import *
 
 with open('openai.txt', 'r') as archivo:
     token = archivo.read()
